@@ -1,0 +1,181 @@
+CREATE DATABASE mysql_challenge;
+
+USE mysql_challenge;
+
+-- VERY EASY --
+
+-- Create a table with your top three cars and include make, model, year.
+-- Create a query to add in two more cars
+
+CREATE TABLE cars (
+id INT AUTO_INCREMENT PRIMARY KEY,
+make VARCHAR (50) NOT NULL,
+model VARCHAR(50) NOT NULL,
+year INT NOT NULL
+);
+
+INSERT INTO cars (make, model, year)
+VALUES
+('Chevrolet', 'Corvette', '2022'),
+('Koenigsegg', 'Agera', '2014'),
+('Mclaren', '720s', '2018');
+
+INSERT INTO cars (make, model, year)
+VALUES
+('Nissan', 'GTR R34', '1998'),
+('Chevrolet', 'Camero', '2017');
+
+SELECT * FROM cars;
+
+-- EASY --
+
+-- Create a table with your top five favorite books with Title, Publish Date, and Author First/Last name
+-- Create a query to add in two new books Remove the oldest book Provide an additional query giving the sum of all books
+
+CREATE TABLE books (
+id INT AUTO_INCREMENT PRIMARY KEY,
+title VARCHAR (50) NOT NULL,
+publish_date VARCHAR(50) NOT NULL,
+author_first_name VARCHAR(50) NOT NULL,
+author_last_name VARCHAR(50) NOT NULL
+);
+
+INSERT INTO books (title, publish_date, author_first_name, author_last_name)
+VALUES
+('The Power of Discipline', 'April 8, 2020', 'Daniel', 'Walter'),
+('Rich Dad Poor Dad', 'April 11, 2017', 'Robert', 'Kiyosaki'),
+('The Millionaire Next Door', 'November 16, 2010', 'Thomas', 'Stanley'),
+('Alpha Male Bible','November 3, 2021','Sean','Wayne'),
+('The Science of Self-Discipline','October 23, 2017','Peter','Hollins');
+
+INSERT INTO books (title, publish_date, author_first_name, author_last_name)
+VALUES
+("Can't Hurt Me", 'November 28, 2018', 'David', 'Goggins'),
+('The Psychology of Money', 'Spetember 8, 2020', 'Morgan', 'Housel');
+
+SELECT * FROM books;
+
+DELETE
+FROM books
+WHERE id = 3;
+
+SELECT * FROM books;
+
+-- MEDIUM --
+
+-- Create a table with your top 10 movies. Include title, release date, and rating 
+-- Create a query that pulls all movies,
+-- In order of release date, where the title includes the letter “s”.
+
+CREATE TABLE movies (
+id INT AUTO_INCREMENT PRIMARY KEY,
+movie_title VARCHAR (50) NOT NULL,
+release_date VARCHAR(50) NOT NULL,
+rating INT NOT NULL
+);
+
+INSERT INTO movies (movie_title, release_date, rating)
+VALUES
+('Demon Slayer', '2021', 10),
+('Avengers: Endgame', '2019', '9'),
+('Avengers: Infinity War', '2018', '9.2'),
+('Dragon Ball Super: Broly', '2018', 9.1),
+('Spider-Man: Spider-Verse', '2018', '9.5'),
+('The Incredibles', '2004', '8.9'),
+('Black Panther', '2018', 9),
+('Logan', '2017', '9.4'),
+('The Dark Knight', '2008', '9.8'),
+('Iron Man', '2008', 10);
+
+INSERT INTO movies (movie_title, release_date, rating)
+VALUES
+('Superman Returns', '2006', 9.2),
+('Superman ', '1978', '9');
+
+SELECT *
+FROM movies 
+WHERE movie_title LIKE "%S%"
+ORDER BY release_date DESC;
+
+-- HARD --
+
+-- Make a copy of your Medium Challenge Write out the queries that would add the director’s 
+-- First Name and Last Name into two separate columns.
+-- Create a query that puts the names together. 
+-- Create a query to put the list in alphabetical order by the last name from A-Z After you order the list,
+-- remove the Movies where the Last Name ends with ”R-Z” Write a query where the first three appear
+
+CREATE TABLE movies_copy (
+id INT AUTO_INCREMENT PRIMARY KEY,
+movie_title VARCHAR (50) NOT NULL,
+release_date VARCHAR(50) NOT NULL,
+rating INT NOT NULL,
+director_first_name VARCHAR(50) NOT NULL,
+director_last_name VARCHAR(50) NOT NULL
+);
+
+INSERT INTO movies_copy (movie_title, release_date, rating, director_first_name, director_last_name)
+VALUES
+('Demon Slayer', '2021', 10, 'Haruo', 'Sotozaki'),
+('Avengers: Endgame', '2019', '9', 'Anthony', 'Russo'),
+('Avengers: Infinity War', '2018', '9.2', 'Joe', 'Russo'),
+('Dragon Ball Super: Broly', '2018', 9.1, 'Tatsuya', 'Nagamine'),
+('Spider-Man: Spider-Verse', '2018', '9.5','Peter','Ramsey'),
+('The Incredibles', '2004', '8.9','Brad','Bird'),
+('Black Panther', '2018', 9,'Ryan','Coogler'),
+('Logan', '2017', '9.4','James','Mangold'),
+('The Dark Knight', '2008', '9.8','Christopher','Nolan'),
+('Iron Man', '2008', 10, 'Jon' ,'Favreau'),
+('Superman Returns', '2006', 9.2, 'Bryan','Singer'),
+('Superman ', '1978', '9', 'Richard','Donner');
+
+SELECT CONCAT(director_first_name,' ',director_last_name) AS "Director_Name", movie_title, release_date, rating FROM movies_copy;
+
+SELECT *
+FROM movies_copy
+ORDER BY director_last_name ASC;
+
+-- VERY HARD --
+
+-- Copy the table from your Very Easy Challenge Write a query to add in three cars at once Write a query to add
+-- in prices and colors for each of these cars Write a query to put the Make and Model together in one column
+-- Create a new query that adds an additional column to the results to show how many cars have the same Make.
+
+CREATE TABLE cars_copy (
+id INT AUTO_INCREMENT PRIMARY KEY,
+make VARCHAR (50) NOT NULL,
+model VARCHAR(50) NOT NULL,
+year INT NOT NULL
+);
+
+INSERT INTO cars_copy (make, model, year)
+VALUES
+('Chevrolet', 'Corvette', '2022'),
+('Koenigsegg', 'Agera', '2014'),
+('Mclaren', '720s', '2018');
+
+ALTER TABLE cars_copy
+ADD COLUMN price VARCHAR(50) NOT NULL;
+
+ALTER TABLE cars_copy
+ADD COLUMN color VARCHAR(50) NOT NULL;
+
+UPDATE cars_copy
+SET color = "Red", price = "50,000"
+WHERE id = 1;
+
+UPDATE cars_copy
+SET color = "Burnt Orange", price = "30,000,000"
+WHERE id = 2;
+
+UPDATE cars_copy
+SET color = "Black", price = "2,000,000"
+WHERE id = 3;
+
+SELECT CONCAT(make,' ',model) AS "Make / Model", year, color, price FROM cars_copy;
+
+ALTER TABLE cars_copy 
+ADD COLUMN result INT;
+
+SELECT *
+FROM cars_copy
